@@ -7,7 +7,7 @@
 </head>
 <body>
   <h1>Sign Up</h1>
-  <form action="/sign-up" method="POST">
+  <form action="/auth/sign-up" method="POST">
     <label for="first_name">First Name:</label>
     <input type="text" name="first_name" required>
     <br>
@@ -19,6 +19,9 @@
     <br>
     <label for="password">Password:</label>
     <input type="password" name="password" required>
+    <br>
+    <label for="is_admin">Admin:</label>
+    <input type="checkbox" name="isAdmin">
     <br>
     <button type="submit">Sign Up</button>
   </form>

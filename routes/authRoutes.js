@@ -6,25 +6,29 @@ const pool = require("../db");
 const router = express.Router();
 
 router.get("/sign-up", (req, res) => {
-  res.render("sign-up-form");
+  res.render("sign-up");
 })
 
 router.post("/sign-up", async (req, res, next) => {
   try{
-    const {username, password, firstName, lastName } = req.body;
+    const { first_name, last_name, username, password, isAdmin } = req.body;
+
+    const isAdminValue = isAdmin ? true : false;
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(req.body); // This will show what the server receives
 
     await pool.query(
-      "INSERT INTO users (username, password, first_name, last_name) VALUES ($1, $2, $3, $4)",
-      [username, hashedPassword, firstName, lastName]
+      "INSERT INTO users (first_name, last_name, username, password, is_admin) VALUES ($1, $2, $3, $4, $5)",
+      [first_name, last_name, username, hashedPassword, isAdminValue]
     );
     res.redirect("/auth/log-in");
   } catch (err){
     next(err);
   }
 })
+
 router.get("/log-in", (req, res) => {
-  res.render("log-in-form");
+  res.render("log-in");
 })
 
 router.post(
