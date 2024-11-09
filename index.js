@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
-const messagesRoutes = require("./routes/messageRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -20,7 +20,7 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 
 app.use("/auth", authRoutes);
-
+app.use("/messages", messageRoutes);
 
 passport.use(new LocalStrategy(async (username, password, done) => {
   try{
