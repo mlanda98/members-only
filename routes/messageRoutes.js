@@ -48,7 +48,6 @@ router.delete("/:id", async (req, res, next) => {
 })
 
 router.get("/", async (req, res, next) => {
-  console.log("GET  /messages route accessed")
   try {
     if (req.isAuthenticated()) {
       const messages = await pool.query(`
