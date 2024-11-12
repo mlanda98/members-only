@@ -46,29 +46,4 @@ router.get("/log-out", (req, res, next) => {
   });
 });
 
-router.get("/messages", async (req, res, next) => {
-  try {
-    if (req.isAuthenticated()) {
-      const messages = await pool.query(`
-       SELECT messages.id, messages.title, messages.text, messages.timestamp, users.first_name, users.last_name
-       FROM messages
-       LEFT JOIN users ON messages.user_id = users.id
-       ORDER BY messages.timestamp DESC
-      `);
-      res.render("messages", { messages: messages.rows, isMember: true });
-    } else {
-      const messages = await pool.query(`
-        SELECT id, title, text, timestamp
-        FROM messages
-        ORDER BY timestamp DESC
-        `);
-      res.render("messages", { messages: messages.rows, isMember: false });
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
-
-
 module.exports = router;
