@@ -32,6 +32,22 @@ console.log("User is authenticated:", req.isAuthenticated());
   }
 });
 
+router.delete("/:id", async (req, res, next) => {
+  try{
+    const messagesId = req.params.id;
+
+    if (!req.isAuthenticated() || !req.user.is_admin) {
+      return res.status(403).send("You do not have permission to delete this message");
+    }
+
+    await pool.query("DELETE FROM messages WHERE id = $1", [messagesId]);
+
+    res.redirect("/messages");
+  } catch (err){
+    next(err);
+  }
+})
+
 router.get("/", async (req, res, next) => {
   console.log("GET  /messages route accessed")
   try {
