@@ -10,6 +10,8 @@ console.log("Current directory:", __dirname);
 
 const pool = require("./db");
 const app = express();
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 
 
 app.use(express.urlencoded({extended:false}));

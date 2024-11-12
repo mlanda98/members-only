@@ -34,15 +34,14 @@ console.log("User is authenticated:", req.isAuthenticated());
 
 router.delete("/:id", async (req, res, next) => {
   try{
-    const messagesId = req.params.id;
+    const {id} = req.params;
 
-    if (!req.isAuthenticated() || !req.user.is_admin) {
-      return res.status(403).send("You do not have permission to delete this message");
-    }
-
-    await pool.query("DELETE FROM messages WHERE id = $1", [messagesId]);
-
-    res.redirect("/messages");
+    if (req.isAuthenticated() || req.user.is_admin) {
+      await pool.query("DELETE FROM messages WHERE id = $1", [id]);
+      res.redirect("/messages");
+    } else {
+      res.status(403).send("You do not have permission to delete this message")
+    } 
   } catch (err){
     next(err);
   }
@@ -58,14 +57,17 @@ router.get("/", async (req, res, next) => {
        LEFT JOIN users ON messages.user_id = users.id
        ORDER BY messages.timestamp DESC
       `);
-      res.render("messages", { messages: messages.rows, isMember: true });
+
+      const isAdmin = req.user.is_admin;
+
+      res.render("messages", { messages: messages.rows, isMember: true, isAdmin: isAdmin });
     } else {
       const messages = await pool.query(`
         SELECT id, title, text, timestamp
         FROM messages
         ORDER BY timestamp DESC
         `);
-      res.render("messages", { messages: messages.rows, isMember: false });
+      res.render("messages", { messages: messages.rows, isMember: false, isAdmin: false });
     }
   } catch (err) {
     next(err);

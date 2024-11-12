@@ -17,6 +17,13 @@
         <% if (isMember && message.first_name && message.last_name) { %>
           <p>Posted by: <%= message.first_name %> <%= message.last_name %></p>
         <% } %>
+
+        <% if (isMember && isAdmin) { %>
+          <form action="/messages/<%= message.id %>?_method=DELETE" method="POST">
+            <button type="submit">Delete</button>
+          </form>
+
+        <% } %>
       </li>
     <% }) %>
   </ul>
