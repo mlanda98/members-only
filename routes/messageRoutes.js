@@ -49,6 +49,7 @@ router.delete("/:id", async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
   try {
+    console.log("is user authenticated?", req.isAuthenticated())
     if (req.isAuthenticated()) {
       const messages = await pool.query(`
        SELECT messages.id, messages.title, messages.text, messages.timestamp, users.first_name, users.last_name
