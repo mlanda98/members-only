@@ -4,12 +4,6 @@ A full-stack web application where members can anonymously post messages. Non-me
 
 ---
 
-🚀 Demo
-
- ![App Demo](dem.gif)
-
----
-
 📌 Features
 - User authentication with Passport.js
 - Secure password hashing with bcrypt
